@@ -11,6 +11,9 @@ class Pokemann:
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
+    def attack(self, target, move):
+        pass
+    
     def draw(self):
         pass
 
@@ -24,10 +27,6 @@ class Move:
         self.powerpoint = powerpoint
         self.power = power
         self.accuracy = accuracy
-
-    def get_damage(self, attacker, target):
-        pass
-
 
 class Player:
 
