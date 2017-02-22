@@ -11,9 +11,23 @@ class Pokemann:
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
-    def attack(self, target, move):
+        self.current_health = health
+
+    def execute_move(self, move, target):
+        damage = move.get_damage(self, target)
+        target.apply_damage(damage)
+
+        move.remaining_power -= 1
+
+    def apply_damage(self, amount):
         pass
-    
+
+    def heal(self, amount):
+        pass
+
+    def get_move(self):
+        return random.choice(moves) # be sure to check powerpoint
+
     def draw(self):
         pass
 
@@ -28,57 +42,64 @@ class Move:
         self.power = power
         self.accuracy = accuracy
 
+        self.remaining_power = remaining_power
+
+    def get_effectiveness(self, target):
+        if self.kind == 'fire' and target.kind == 'grass':
+            multiplier = 2.0
+        elif self.kind == 'grass' and target.kind == 'fire':
+            multiplier = 0.5
+        else:
+            multiplier = 1
+
+        return multiplier
+
+    def get_damage(self, attacker, target):
+
+        p = self.power
+        a = attacker.attack
+        d = target.defense
+        e = self.get_effectivness(target)
+
+        return int(p * a / d * e)
+
 class Player:
 
-    def __init__(self, player_name, characters):
-        self.player_name = player_name
-        self.characters = characters
-
-        self.x = 0
-        self.y = 0
-
-    def draw(self):
+    def __init__(self, characters):
         pass
 
-    def update(self, v_x, v_y):
+    def battle(self, target):
+        '''
+        1. Select a move (from available of character[0])
+        2. target_move = target.get_move()
+        3. check speed for 1st attack
+        4. one attacks two
+            self.execute_move(move, target)
+        5. if two alive, two attacks 1
+            target.execute_move(move, self)
+        '''
         pass
 
-    def capture(self, target):
+    def catch(self, target):
         pass
-
-
-class World:
-
-    def __init__(self):
-        pass
-
-    def draw(self):
-        pass
-
 
 class Game:
 
-    def __init__(self):
+    def __init__():
         pass
 
-    def battle(self):
-        """
-        The logic of a Pokefight
+    def loop(self):
+        # get input
 
-         1) Player selects a move (how is player connected to Pokemann?)
-         2) Other selects random move.
-         3) Speed is checked. Player with higher speed goes first.
-         4) First attack executed. Some formula needs to be devised to determine damage.
-         5) Check for death.
-         6) Second attack executed (if alive).
-         7) Check for death.
-         8) Repeat until one Pokemann is dead. (Does the next one in line move up?)
+        # do logic stuff
+        if player.intersects(pokemann):
+            player.battle(pokemann)
 
-         What happens when all of a player's Pokemann are dead? Is that the end of the game?
-        """
+        if player.intersects(potion):
+            # pick character to heal
+            pass
 
-    def play(self):
-        pass
+        # draw stuff
 
 
 if __name__ == '__main__':
