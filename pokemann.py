@@ -45,14 +45,20 @@ class Move:
         self.remaining_power = remaining_power
 
     def get_effectiveness(self, target):
-        if self.kind == 'fire' and target.kind == 'grass':
-            multiplier = 2.0
-        elif self.kind == 'grass' and target.kind == 'fire':
-            multiplier = 0.5
-        else:
-            multiplier = 1
+        
+        multipliers = {
+                        ('fire' ,'grass'): 2.0,
+                        ('fire' ,'fire'): 1.0,
+                        ('fire', 'water'): 0.5,
+                        ('water', 'fire'): 2.0,
+                        ('water' ,'water'): 1.0,
+                        ('water' ,'grass'): 0.5,
+                        ('grass' ,'water'): 2.0,
+                        ('grass', 'grass'): 1.0
+                        ('grass', 'fire'): 0.5
+                      }
 
-        return multiplier
+        return multipliers[(self.kind, target.kind)]
 
     def get_damage(self, attacker, target):
 
