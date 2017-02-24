@@ -45,6 +45,9 @@ class Pokemann:
         print(self.name + " fainted!")
                   
     def heal(self, amount):
+        """
+        Raises current_health by amount but not more than the base health.
+        """
         pass
 
     def get_availiable_moves(self):
@@ -57,8 +60,12 @@ class Pokemann:
         return result
                   
     def get_move(self):
-        avaialble = self.get_availiable_moves()
-        return random.choice(avaialble)
+        """
+        This might only be used by computer controlled Pokemann. Perhaps
+        'better' Pokemann could be smarter about the random move they choose.
+        """
+        avaialable = self.get_availiable_moves()
+        return random.choice(avaialable)
 
     def draw(self):
         pass
