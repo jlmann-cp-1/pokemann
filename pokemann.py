@@ -115,7 +115,11 @@ class Player:
 
     def catch(self, target):
         pass
-
+    
+    def draw(self):
+        pass
+                  
+                  
 class Game:
 
     def __init__():
