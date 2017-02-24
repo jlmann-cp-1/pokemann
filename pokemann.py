@@ -16,16 +16,23 @@ class Pokemann:
         self.current_health = health
 
     def execute_move(self, move, target):
-        r = random.randint(1, 100)
+        availiable = self.get_available_moves()
         
-        if r <= move.accuracy:
-            damage = move.get_damage(self, target)
-            target.apply_damage(damage)
-            print(move.name + " hits " + target.name + " for " + str(damage) + "."
+        if self.fainted:
+            print("Error: " + self.name + " is fainted!")
+        elif move not in avaiable:
+            print("Error: " + move.name + " is not avaialble.")
         else:
-            print("You missed!")
+            r = random.randint(1, 100)
 
-        move.remaining_power -= 1
+            if r <= move.accuracy:
+                damage = move.get_damage(self, target)
+                target.apply_damage(damage)
+                print(move.name + " hits " + target.name + " for " + str(damage) + "."
+            else:
+                print(move.name + "missed!")
+
+            move.remaining_power -= 1
 
     def take_damage(self, amount):
         self.current_health -= amount
