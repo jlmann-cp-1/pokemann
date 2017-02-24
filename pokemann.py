@@ -65,7 +65,22 @@ class Pokemann:
 
 
 class Move:
-
+    STRONG = 2.0
+    NORMAL = 1.0
+    WEAK = 0.5
+        
+    multipliers = {
+            ('student' ,'administrator'): STRONG,
+            ('student' ,'student'): NORMAL,
+            ('student', 'teacher'): WEAK,
+            ('teacher', 'student'): STRONG,
+            ('teacher' ,'teacher'): NORMAL,
+            ('teacher' ,'administrator'): WEAK,
+            ('administrator' ,'teacher'): STRONG,
+            ('administrator', 'administrator'): NORMAL,
+            ('administrator', 'student'): WEAK
+          }
+                 
     def __init__(self, name, kind, powerpoint, power, accuracy):
         self.name = name
         self.kind = kind
@@ -76,22 +91,6 @@ class Move:
         self.remaining_power = remaining_power
 
     def get_effectiveness(self, target):
-        STRONG = 2.0
-        NORMAL = 1.0
-        WEAK = 0.5
-        
-        multipliers = {
-                ('student' ,'administrator'): STRONG,
-                ('student' ,'student'): NORMAL,
-                ('student', 'teacher'): WEAK,
-                ('teacher', 'student'): STRONG,
-                ('teacher' ,'teacher'): NORMAL,
-                ('teacher' ,'administrator'): WEAK,
-                ('administrator' ,'teacher'): STRONG,
-                ('administrator', 'administrator'): NORMAL,
-                ('administrator', 'student'): WEAK
-              }
-
         return multipliers[(self.kind, target.kind)]
 
     def get_damage(self, attacker, target):
@@ -103,6 +102,7 @@ class Move:
 
         return int(p * a / d * e)
 
+                      
 class Player:
 
     def __init__(self, characters):
