@@ -27,9 +27,16 @@ class Pokemann:
 
         move.remaining_power -= 1
 
-    def apply_damage(self, amount):
-        pass
+    def take_damage(self, amount):
+        self.current_health -= amount
+        
+        if self.current_health <= 0:
+            self.faint()
 
+    def faint(self):
+        self.current_health = 0
+        print(self.name + " fainted!")
+                  
     def heal(self, amount):
         pass
 
