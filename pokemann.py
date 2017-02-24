@@ -102,7 +102,7 @@ class Move:
         p = self.power
         a = attacker.attack
         d = target.defense
-        e = effectiveness[(self.kind, target.kind)]
+        e = self.effectiveness[(self.kind, target.kind)]
 
         return int(p * a / d * e)
 
