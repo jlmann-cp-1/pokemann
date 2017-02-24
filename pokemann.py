@@ -35,7 +35,6 @@ class Pokemann:
 class Move:
 
     def __init__(self, name, kind, powerpoint, power, accuracy):
-
         self.name = name
         self.kind = kind
         self.powerpoint = powerpoint
@@ -45,18 +44,21 @@ class Move:
         self.remaining_power = remaining_power
 
     def get_effectiveness(self, target):
+        STRONG = 2.0
+        NORMAL = 1.0
+        WEAK = 0.5
         
         multipliers = {
-                        ('fire' ,'grass'): 2.0,
-                        ('fire' ,'fire'): 1.0,
-                        ('fire', 'water'): 0.5,
-                        ('water', 'fire'): 2.0,
-                        ('water' ,'water'): 1.0,
-                        ('water' ,'grass'): 0.5,
-                        ('grass' ,'water'): 2.0,
-                        ('grass', 'grass'): 1.0
-                        ('grass', 'fire'): 0.5
-                      }
+                ('student' ,'administrator'): STRONG,
+                ('student' ,'student'): NORMAL,
+                ('student', 'teacher'): WEAK,
+                ('teacher', 'student'): STRONG,
+                ('teacher' ,'teacher'): NORMAL,
+                ('teacher' ,'administrator'): WEAK,
+                ('administrator' ,'teacher'): STRONG,
+                ('administrator', 'administrator'): NORMAL,
+                ('administrator', 'student'): WEAK
+              }
 
         return multipliers[(self.kind, target.kind)]
 
@@ -74,7 +76,7 @@ class Player:
     def __init__(self, characters):
         pass
 
-    def battle(self, target):
+    def fight(self, target):
         '''
         1. Select a move (from available of character[0])
         2. target_move = target.get_move()
@@ -99,7 +101,7 @@ class Game:
 
         # do logic stuff
         if player.intersects(pokemann):
-            player.battle(pokemann)
+            player.fight(pokemann)
 
         if player.intersects(potion):
             # pick character to heal
