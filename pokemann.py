@@ -16,12 +16,12 @@ class Pokemann:
         self.current_health = health
 
     def execute_move(self, move, target):
-        availiable = self.get_available_moves()
+        available = self.get_available_moves()
         
         if self.fainted:
             print("Error: " + self.name + " is fainted!")
-        elif move not in avaiable:
-            print("Error: " + move.name + " is not avaialble.")
+        elif move not in available:
+            print("Error: " + move.name + " is not available.")
         else:
             r = random.randint(1, 100)
 
@@ -50,7 +50,7 @@ class Pokemann:
         """
         pass
 
-    def get_availiable_moves(self):
+    def get_available_moves(self):
         result = []
                   
         for m in self.moves:
@@ -64,8 +64,8 @@ class Pokemann:
         This might only be used by computer controlled Pokemann. Perhaps
         'better' Pokemann could be smarter about the random move they choose.
         """
-        avaialable = self.get_availiable_moves()
-        return random.choice(avaialable)
+        available = self.get_available_moves()
+        return random.choice(available)
 
     def draw(self):
         pass
