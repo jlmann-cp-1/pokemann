@@ -37,7 +37,7 @@ class Pokemann:
             if r <= move.accuracy:
                 damage = move.get_damage(self, target)
                 target.apply_damage(damage)
-                print(move.name + " hits " + target.name + " for " + str(damage) + "."
+                print(move.name + " hits " + target.name + " for " + str(damage) + ".")
             else:
                 print(move.name + "missed!")
 
@@ -104,7 +104,7 @@ class Move:
         self.power = power
         self.accuracy = accuracy
 
-        self.remaining_power = remaining_power
+        self.remaining_power = powerpoint
 
     def get_damage(self, attacker, target):
 
