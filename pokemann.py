@@ -15,6 +15,15 @@ class Pokemann:
 
         self.current_health = health
 
+    def get_available_moves(self):
+        result = []
+                  
+        for m in self.moves:
+            if m.remaining_power > 0:
+                  result.append(m)
+                    
+        return result
+    
     def execute_move(self, move, target):
         available = self.get_available_moves()
         
