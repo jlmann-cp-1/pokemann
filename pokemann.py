@@ -150,12 +150,6 @@ class Game:
         # get input
 
         # do logic stuff
-        if player.intersects(pokemann):
-            player.fight(pokemann)
-
-        if player.intersects(potion):
-            # pick character to heal
-            pass
 
         # draw stuff
 
