@@ -69,7 +69,7 @@ class Move:
     NORMAL = 1.0
     WEAK = 0.5
         
-    multipliers = {
+    effectiveness = {
             ('student' ,'administrator'): STRONG,
             ('student' ,'student'): NORMAL,
             ('student', 'teacher'): WEAK,
@@ -90,15 +90,12 @@ class Move:
 
         self.remaining_power = remaining_power
 
-    def get_effectiveness(self, target):
-        return multipliers[(self.kind, target.kind)]
-
     def get_damage(self, attacker, target):
 
         p = self.power
         a = attacker.attack
         d = target.defense
-        e = self.get_effectivness(target)
+        e = effectiveness[(self.kind, target.kind)]
 
         return int(p * a / d * e)
 
