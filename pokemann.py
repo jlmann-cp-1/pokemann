@@ -13,6 +13,7 @@ class Pokemann:
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
+        self.fainted = False
         self.current_health = health
 
     def get_available_moves(self):
