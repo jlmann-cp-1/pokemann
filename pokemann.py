@@ -1,3 +1,5 @@
+import random
+
 class Pokemann:
 
     def __init__(self, name, kind, attack, defense, speed, health, moves, image):
@@ -14,8 +16,14 @@ class Pokemann:
         self.current_health = health
 
     def execute_move(self, move, target):
-        damage = move.get_damage(self, target)
-        target.apply_damage(damage)
+        r = random.randint(1, 100)
+        
+        if r <= move.accuracy:
+            damage = move.get_damage(self, target)
+            target.apply_damage(damage)
+            print(move.name + " hits " + target.name + " for " + str(damage) + "."
+        else:
+            print("You missed!")
 
         move.remaining_power -= 1
 
@@ -25,8 +33,18 @@ class Pokemann:
     def heal(self, amount):
         pass
 
+    def get_availiable_moves(self):
+        result = []
+                  
+        for m in self.moves:
+            if m.remaining_power > 0:
+                  result.append(m)
+                  
+        return result
+                  
     def get_move(self):
-        return random.choice(moves) # be sure to check powerpoint
+        avaialble = self.get_availiable_moves()
+        return random.choice(avaialble)
 
     def draw(self):
         pass
