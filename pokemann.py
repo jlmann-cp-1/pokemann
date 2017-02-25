@@ -36,9 +36,9 @@ class Pokemann:
             r = random.randint(1, 100)
 
             if r <= move.accuracy:
-                damage = move.get_damage(self, target)
+                damage = move.calculate_damage(self, target)
+                print(self.name + " hits " + target.name + " with " + move.name  + " for " + str(damage) + ".")
                 target.take_damage(damage)
-                print(move.name + " hits " + target.name + " for " + str(damage) + ".")
             else:
                 print(move.name + "missed!")
 
@@ -56,28 +56,14 @@ class Pokemann:
                   
     def heal(self, amount):
         """
-        Raises current_health by amount but not more than the base health.
+        Raises current_health by amount but not to more than the base health.
         """
         pass
 
-    def get_available_moves(self):
-        result = []
-                  
-        for m in self.moves:
-            if m.remaining_power > 0:
-                  result.append(m)
-                  
-        return result
-                  
-    def get_move(self):
-        """
-        This might only be used by computer controlled Pokemann. Perhaps
-        'better' Pokemann could be smarter about the random move they choose.
-        """
-        available = self.get_available_moves()
-        return random.choice(available)
-
     def draw(self):
+        pass
+
+    def __repr__():
         pass
 
 
@@ -107,7 +93,7 @@ class Move:
 
         self.remaining_power = powerpoint
 
-    def get_damage(self, attacker, target):
+    def calculate_damage(self, attacker, target):
 
         p = self.power
         a = attacker.attack
@@ -116,30 +102,113 @@ class Move:
 
         return int(p * a / d * e)
 
-                      
-class Player:
-
-    def __init__(self, characters):
+     def __repr__():
         pass
 
-    def fight(self, target):
-        '''
-        1. Select a move (from available of character[0])
-        2. target_move = target.get_move()
-        3. check speed for 1st attack
-        4. one attacks two
-            self.execute_move(move, target)
-        5. if two alive, two attacks 1
-            target.execute_move(move, self)
-        '''
+                     
+class Player:
+
+    def __init__(self, name, characters):
+        self.name = name
+        self.characters = characters
+
+    def get_available_characters(self):
+        """
+        Returns a list of all unfainted characters belonging to a player.
+        """
+        pass
+    
+    def select_character(self):
+        """
+        Human players use this.
+
+        1) Generate a menu which shows a numbered list of all characters along with status (health).
+        2) Have the player select a character.
+        3) Move the selected character to position [0] in the characters list.
+        """
+        pass
+    
+    def select_move(self, character):
+        """
+        Human players use this.
+
+        1) Generate a menu which shows a numbered list all available moves for a character.
+        2) Have the player select a move.
+        3) Return the selected move.
+        """
+
+        available = character.get_available_moves()
+        
+        print("Select a move:")
+        
+        for i, move in enumerate(available):
+            print(str(i) + ") " + move.name)
+
+        n = input("Your choice: ")
+        n = int(n)
+        
+        return available[n]
+        
+
+    def get_random_character(self):
+        """
+        Computer controlled Pokemann use this.
+
+        Return a random character from all unfainted.
+        """
+        pass
+    
+    def get_random_move(self):
+        """
+        Computer controlled Pokemann use this.
+
+        Return a random move from all available.
+        (A better Pokemann AI could be smarter about the move they choose.)
+        """
+        
+        available = self.get_available_moves()
+        return random.choice(available)
+
+    def get_target(self):
+        """
+        Returns the first unfainted character in the characters list.
+        """
+        pass
+    
+    def fight(self, character, target):
+        """
+        1. Select player_move (from available of character)
+        2. Select target_move (use get_random_move)
+        3. Compare speeds of character and target
+            If character.speed > target.speed, set first = character, second = target
+            Otherwise, set first = target, second = character
+            If speeds are equal, assign first and second randomly.
+        4. Call
+            first.execute_move(move, second)
+        5. If second is still unfainted, call
+            second.execute_move(move, first)
+        """
         pass
 
     def catch(self, target):
+        pass
+
+    def battle(self, opponent):
+        """
+        This function controls all battle logic including decisions to reorder characters,
+        fight, use potions, run away, and whatever else happens in Pokebattles.
+
+        Use a loop so that this continues until all characters for either the player or
+        opponent are fainted.
+        """
         pass
     
     def draw(self):
         pass
                   
+    def __repr__():
+        pass
+
                   
 class Game:
 
@@ -147,6 +216,8 @@ class Game:
         pass
 
     def loop(self):
+        pass
+    
         # get input
 
         # do logic stuff
@@ -166,6 +237,18 @@ if __name__ == '__main__':
     disruptive_behavior = Move("Disruptive Behavior", "student", 30, 40, 100)
 
     # Create some Pokemann(s)
-    coopasaur = Pokemann("coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, id_violation], "coopasaur.png")
-    mayfieldarow = Pokemann("mayfieldarow", "administrator", 30, 20, 50, 30, [dress_code, id_violation, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("andrewag", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
+    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, id_violation], "coopasaur.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 30, [lecture, id_violation, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 30, [lecture, id_violation, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 30, [dress_code, id_violation, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "morganyta.png")
+    
+    # Create Players
+    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu])
+    team = Player("Team Rocket", [colboreon, zoeotto, morganyta, cookmander])
+    
