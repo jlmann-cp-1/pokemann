@@ -126,13 +126,13 @@ class Character:
     
     def get_first_pokemann(self):
         """
-        Returns the first unfainted character in the pokemann list.
+        Returns the first [0] unfainted character in the pokemann list.
         """
         pass
     
     def set_first_pokemann(self, swap_pos):
         """
-        Moves pokemann to first position in the pokemann list by exchanging it with
+        Moves pokemann to first position [0] in the pokemann list by exchanging it with
         pokemann located at swap_pos.
         """
         pass
