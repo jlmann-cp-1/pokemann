@@ -155,7 +155,7 @@ class Opponent(Character):
     def __init__(self, name, pokemann):
         Character.__init__(self, name, pokemann)
       
-                  
+
 class Game:
 
     def __init__(self):
@@ -174,7 +174,8 @@ class Game:
         Returns a random available move from the pokemann. This will probably only be used
         by computer controlled pokemann.
         """
-        pass
+        available_moves = pokemann.get_available_moves()
+        return random.choice(available_moves)
     
     def select_move(self, pokemann):
         """
