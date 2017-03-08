@@ -242,7 +242,6 @@ class Game:
         """
         pass
     
-
     def battle(self, player, opponent):
         """
         This function controls all battle logic including decisions to reorder pokemann,
