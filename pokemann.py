@@ -143,8 +143,8 @@ class Character:
     
 class Player(Character):
 
-    def __init__(self, name, pokemann):
-        Character.__init__(self, name, pokemann)
+    def __init__(self, name, pokemann, image):
+        Character.__init__(self, name, pokemann, image)
         
         self.collection = []
         self.pokeballs = 0
@@ -152,8 +152,8 @@ class Player(Character):
                   
 class Opponent(Character):
 
-    def __init__(self, name, pokemann):
-        Character.__init__(self, name, pokemann)
+    def __init__(self, name, pokemann, image):
+        Character.__init__(self, name, pokemann, image)
       
 
 class Game:
@@ -289,15 +289,12 @@ if __name__ == '__main__':
     marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "marcelax.png")
     
     # Create Player
-    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu])
+    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
     # Create Opponents
-    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander])
-    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax])
+    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
+    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
 
     # Create a game
     g = Game()
 
-    # Test out a fight
-    g.fight(caseypuff, blakachu)
-    
