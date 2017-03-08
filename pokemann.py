@@ -264,7 +264,7 @@ class Game:
 
 
 if __name__ == '__main__':
-
+    
     # Make some moves
     homework = Move("Homework", "teacher", 30, 40, 100)
     pop_quiz = Move("Pop quiz", "teacher", 30, 40, 100)
@@ -275,26 +275,25 @@ if __name__ == '__main__':
     disruptive_behavior = Move("Disruptive Behavior", "student", 30, 40, 100)
 
     # Create some Pokemann
-    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 30, [homework, pop_quiz, id_violation], "coopasaur.png")
-    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 30, [lecture, id_violation, homework], "cookmander.png")
-    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 30, [lecture, id_violation, homework], "vincolairy.png")
-    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 30, [dress_code, id_violation, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
-    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "caseypuff.png")
-    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "colboreon.png")
-    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "blakachu.png")
-    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "zoeotto.png")
-    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "morganyta.png")
-    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "katlevee.png")
+    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, [homework, pop_quiz, id_violation], "coopasaur.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, [lecture, id_violation, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, [lecture, id_violation, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, [dress_code, id_violation, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, [excessive_talking, disruptive_behavior, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, [excessive_talking, disruptive_behavior, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, [excessive_talking, disruptive_behavior, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, [excessive_talking, disruptive_behavior, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, [excessive_talking, disruptive_behavior, homework], "morganyta.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, [excessive_talking, disruptive_behavior, homework], "katlevee.png")
     marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "marcelax.png")
     
     # Create Player
-    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
+    pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu])
 
     # Create Opponents
-    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
-    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
+    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander])
+    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax])
 
     # Create a game
     g = Game()
-
