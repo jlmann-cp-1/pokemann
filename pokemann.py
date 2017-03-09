@@ -149,7 +149,16 @@ class Player(Character):
         self.collection = []
         self.pokeballs = 0
 
-                  
+    def catch(self, target):
+        """
+        Can only be applied to wild pokemann. Determine a catch by generating a random
+        value based on the target health. If a catch is successful, add the target to the
+        player's collection. Decrease the player's pokeball count by 1 regardless of success.
+        (Perhaps pokeballs kind could be incorporated into the probability at some point.)
+        """
+        pass
+    
+    
 class Opponent(Character):
 
     def __init__(self, name, pokemann, image):
@@ -220,15 +229,6 @@ class Game:
             second.execute_move(move, first)
 
         (Once we have an actual game, we'll need to devise a way to remove fainted targets.)
-        """
-        pass
-    
-    def catch(self, target):
-        """
-        Can only be applied to wild pokemann. Determine a catch by generating a random
-        value based on the target health. If a catch is successful, add the target to the
-        player's collection. Decrease the player's pokeball count by 1 regardless of success.
-        (Perhaps pokeballs kind could be incorporated into the probability at some point.)
         """
         pass
 
