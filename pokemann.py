@@ -233,8 +233,8 @@ if __name__ == '__main__':
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
     # Create Opponents
-    rocket = Opponent("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
-    jessie = Opponent("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
+    rocket = NPC("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
+    jessie = NPC("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
 
     # Create a game
     g = Game()
