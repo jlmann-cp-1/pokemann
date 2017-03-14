@@ -52,6 +52,7 @@ class Pokemann:
 
     def faint(self):
         self.current_health = 0
+        self.fainted = True
         print(self.name + " fainted!")
                   
     def heal(self, amount):
