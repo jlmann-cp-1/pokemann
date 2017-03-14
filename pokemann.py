@@ -2,7 +2,7 @@ import random
 
 class Pokemann:
 
-    def __init__(self, name, kind, attack, defense, speed, health, moves, image):
+    def __init__(self, name, kind, attack, defense, speed, health, catch_rate, moves, image):
 
         self.name = name
         self.kind = kind
@@ -10,6 +10,7 @@ class Pokemann:
         self.defense = defense
         self.speed = speed
         self.health = health
+        self.catch_rate = catch_rate
         self.moves = moves # this is a list of Move objects
         self.image = image # path to image file
 
@@ -59,13 +60,22 @@ class Pokemann:
         """
         Raises current_health by amount but not to more than the base health.
         """
-        pass
+        self.current_health += health
+
+        if current_health > health:
+            current_health = health
+
+        fainted = false
 
     def restore(self):
         """
         Restores all health and resets powerpoint for all moves.
         """
-        pass
+        self.current_health = health
+        self.fainted = False
+
+        for m in self.moves:
+            m.restore()
     
     def draw(self):
         pass
@@ -110,6 +120,7 @@ class Move:
         """
         Resets remaing_power to starting powerpoint.
         """
+        self.remaining_power = powerpoint
         
 
 class Character:
@@ -159,7 +170,7 @@ class Player(Character):
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
         
-        self.collection = []
+        self.computer = []
         self.pokeballs = 0
 
     def catch(self, target):
@@ -180,8 +191,7 @@ class Player(Character):
             pass
         else:
             print("It got away!")
-            return False
-        
+    
     def run(self, target):
         """
         Can only be applied in the presence of a wild pokemann. Success is determined by
@@ -192,18 +202,86 @@ class Player(Character):
         """
         pass
     
-   
+    def reorder(self, target):
+        """
+        1) Generate a menu which shows a numbered list of all available pokemann along with status (health).
+        2) Have the player select a character.
+        3) Set the selected character as the active pokemann.
+        """
+        pass
+    
+    def select_move(self):
+        """
+        1) Generate a numbered list all available moves for the active pokemann.
+        2) Have the player select a move.
+        3) Return the selected move.
+        """
+        active = self.get_active_pokemann()
+        available = active.get_available_moves()
+        
+        print("Select a move:")
+        
+        for i, move in enumerate(available):
+            print(str(i) + ") " + move.name)
+
+        n = input("Your choice: ")
+        n = int(n)
+        
+        return available[n]
+    
 class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
       
+    def reorder(self, pokemann):
+        """
+        Returns a random available move from the pokemann. This will probably only be used
+        by computer controlled pokemann.
+        """
+        active = self.get_active_pokemann()
+        available = active.get_available_moves()
+        
+        return random.choice(available)
 
+    def select_move():
+        """
+        Returns a random available move from the active pokemann.
+        """
+        pass
+
+    
 class Game:
 
     def __init__(self):
         pass
+
+    def encounter(self, player, target):
+        """
+        This function controls all logic when encountering a wild pokemann. For each turn,
+        options are to catch, run, reorder, or select a move. The encounter continues until the
+        wild pokemann is caught or fainted or the player successfully runs or has all pokemann
+        in the party fainted.
+        """
+        pass
     
+    def battle(self, player, opponent):
+        """
+        This function controls all battle logic including decisions to reorder pokemann,
+        fight, use potions, and whatever else happens in Pokebattles. This continues until all
+        pokemann for either the player or opponent are fainted.
+        """
+        pass
+    
+    def loop(self):
+        pass
+    
+        # get input
+
+        # do logic stuff
+
+        # draw stuff
+
 
 if __name__ == '__main__':
     
@@ -217,18 +295,18 @@ if __name__ == '__main__':
     disruptive_behavior = Move("Disruptive Behavior", "student", 30, 40, 100)
 
     # Create some Pokemann
-    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, [homework, pop_quiz, id_violation], "coopasaur.png")
-    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, [lecture, id_violation, homework], "cookmander.png")
-    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, [lecture, id_violation, homework], "vincolairy.png")
-    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, [dress_code, id_violation, lecture], "mayfieldarow.png")
-    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
-    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, [excessive_talking, disruptive_behavior, homework], "caseypuff.png")
-    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, [excessive_talking, disruptive_behavior, homework], "colboreon.png")
-    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, [excessive_talking, disruptive_behavior, homework], "blakachu.png")
-    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, [excessive_talking, disruptive_behavior, homework], "zoeotto.png")
-    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, [excessive_talking, disruptive_behavior, homework], "morganyta.png")
-    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, [excessive_talking, disruptive_behavior, homework], "katlevee.png")
-    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, [excessive_talking, disruptive_behavior, homework], "marcelax.png")
+    coopasaur = Pokemann("Coopasaur", "teacher", 30, 20, 50, 100, 10, [homework, pop_quiz, id_violation], "coopasaur.png")
+    cookmander = Pokemann("Cookmander", "teacher", 30, 20, 50, 100, 20, [lecture, id_violation, homework], "cookmander.png")
+    vincolairy = Pokemann("Vincolairy", "teacher", 30, 20, 50, 120, 5, [lecture, id_violation, homework], "vincolairy.png")
+    mayfieldarow = Pokemann("Mayfieldarow", "administrator", 30, 20, 50, 90, 20, [dress_code, id_violation, lecture], "mayfieldarow.png")
+    andrewag = Pokemann("Andrewag", "student", 30, 20, 50, 150, 1, [excessive_talking, disruptive_behavior, homework], "andrewag.png")
+    caseypuff = Pokemann("Caseypuff", "student", 30, 20, 50, 170, 70, [excessive_talking, disruptive_behavior, homework], "caseypuff.png")
+    colboreon = Pokemann("Colboreon", "student", 30, 20, 50, 80, 30, [excessive_talking, disruptive_behavior, homework], "colboreon.png")
+    blakachu = Pokemann("Blakachu", "student", 30, 20, 50, 130, 8,[excessive_talking, disruptive_behavior, homework], "blakachu.png")
+    zoeotto = Pokemann("Zoeotto", "student", 30, 20, 50, 100, 15, [excessive_talking, disruptive_behavior, homework], "zoeotto.png")
+    morganyta = Pokemann("Morganyta", "student", 30, 20, 50, 160, 32, [excessive_talking, disruptive_behavior, homework], "morganyta.png")
+    katlevee = Pokemann("Katlevee", "student", 30, 20, 50, 140, 4, [excessive_talking, disruptive_behavior, homework], "katlevee.png")
+    marcelax = Pokemann("Marcelax", "student", 30, 20, 50, 30, 100, [excessive_talking, disruptive_behavior, homework], "marcelax.png")
     
     # Create Player
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
@@ -239,4 +317,3 @@ if __name__ == '__main__':
 
     # Create a game
     g = Game()
- 
