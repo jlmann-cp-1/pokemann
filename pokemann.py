@@ -118,6 +118,18 @@ class Character:
         self.pokemann = pokemann
         self.image = image
 
+    def get_available_pokemann(self):
+        """
+        Returns a list of all unfainted Pokemann belonging to a character.
+        """
+        result = []
+                  
+        for p in self.pokemann:
+            if p.fainted == False:
+                  result.append(m)
+                    
+        return result
+    
     def get_active_pokemann(self):
         """
         Returns the first unfainted character in the pokemann list. If all pokemann
