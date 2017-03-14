@@ -126,7 +126,7 @@ class Character:
                   
         for p in self.pokemann:
             if p.fainted == False:
-                  result.append(m)
+                  result.append(p)
                     
         return result
     
