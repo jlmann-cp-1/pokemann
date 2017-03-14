@@ -118,7 +118,7 @@ class Character:
         self.pokemann = pokemann
         self.image = image
 
-    def get_lead_pokemann(self):
+    def get_active_pokemann(self):
         """
         Returns the first unfainted character in the pokemann list. If all pokemann
         are fainted, return None.
@@ -130,7 +130,7 @@ class Character:
         else:
             return None
     
-    def set_lead_pokemann(self, swap_pos):
+    def set_active_pokemann(self, swap_pos):
         """
         Moves pokemann to first position [0] in the pokemann list by exchanging it with
         pokemann located at swap_pos.
@@ -172,7 +172,7 @@ class Player(Character):
     def run(self, target):
         """
         Can only be applied in the presence of a wild pokemann. Success is determined by
-        comparing speeds of the player's lead pokemann and the wild pokemann. Incoroporate
+        comparing speeds of the player's active pokemann and the wild pokemann. Incoroporate
         randomness so that speed is not the only factor determining success.
 
         Return True if the escape is successful and False otherwise.
@@ -180,7 +180,7 @@ class Player(Character):
         pass
     
    
-class Opponent(Character):
+class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
@@ -190,98 +190,7 @@ class Game:
 
     def __init__(self):
         pass
-
-    def select_pokemann(self, character):
-        """
-        1) Generate a menu which shows a numbered list of all characters along with status (health).
-        2) Have the player select a character.
-        3) Move the selected character to position [0] in the characters list.
-        """
-        pass
-
-    def select_random_pokemann(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        available_moves = pokemann.get_available_moves()
-        return random.choice(available_moves)
     
-    def select_move(self, pokemann):
-        """
-        1) Generate a menu which shows a numbered list all available moves for a pokemann.
-        2) Have the player select a move.
-        3) Return the selected move.
-        """
-
-        available = pokemann.get_available_moves()
-        
-        print("Select a move:")
-        
-        for i, move in enumerate(available):
-            print(str(i) + ") " + move.name)
-
-        n = input("Your choice: ")
-        n = int(n)
-        
-        return available[n]
-
-    def select_random_move(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        pass
-
-    def fight(self, player_pokemann, target_pokemann):
-        """
-        This controls the logic for a single round in a fight whether in context of a battle
-        or with a wild pokemann.
-        
-        1. Select player_move (use select_move)
-        2. Select target_move (use select_random_move)
-        3. Compare speeds of player_pokemann and target_pokemann
-            If player_pokemann.speed > target_pokemann.speed, set first = player_pokemann,
-            second = target_pokemann. Otherwise, set first = target_pokemann, second = player_pokemann
-            If speeds are equal, assign first and second randomly.
-        4. Call
-            first.execute_move(move, second)
-        5. If second is still unfainted, call
-            second.execute_move(move, first)
-
-        (Once we have an actual game, we'll need to devise a way to remove fainted targets.)
-        """
-        pass
-
-    def encounter(self, player, target):
-        """
-        This function controls all logic when encountering a wild pokemann. Options are to
-        fight, catch, or ignore.
-
-        Use a loop so that this continues until a pokemann is fainted, caught, or the
-        target is ignored.
-        """
-        pass
-    
-    def battle(self, player, opponent):
-        """
-        This function controls all battle logic including decisions to reorder pokemann,
-        fight, use potions, and whatever else happens in Pokebattles.
-
-        Use a loop so that this continues until all characters for either the player or
-        opponent are fainted.
-        """
-        pass
-    
-    def loop(self):
-        pass
-    
-        # get input
-
-        # do logic stuff
-
-        # draw stuff
-
 
 if __name__ == '__main__':
     
