@@ -118,19 +118,19 @@ class Character:
         self.pokemann = pokemann
         self.image = image
 
-    def get_available_pokemann(self):
+    def get_lead_pokemann(self):
         """
-        Returns a list of all unfainted Pokemann belonging to a character.
+        Returns the first unfainted character in the pokemann list. If all pokemann
+        are fainted, return None.
         """
-        pass
+        available = self.get_available_pokemann()
+
+        if len(available) > 0:
+            return pokemann[0]
+        else:
+            return None
     
-    def get_first_pokemann(self):
-        """
-        Returns the first [0] unfainted character in the pokemann list.
-        """
-        pass
-    
-    def set_first_pokemann(self, swap_pos):
+    def set_lead_pokemann(self, swap_pos):
         """
         Moves pokemann to first position [0] in the pokemann list by exchanging it with
         pokemann located at swap_pos.
@@ -151,13 +151,15 @@ class Player(Character):
 
     def catch(self, target):
         """
-        Can only be applied to wild pokemann. Determine a catch by generating a random
+        Can only be applied to a wild pokemann. Determine a catch by generating a random
         value and comparing it to the catch_rate. If a catch is successful, append the
         target to the player's pokemann list. However, if the pokemann list already
         contains 6 pokemann, add the caught target to the players computer instead.
         Pokemann sent to the computer will be fully restored, but other caught pokemann
-        will remain at the strenght they were caught. Decrease the player's pokeball
+        will remain at the strength they were caught. Decrease the player's pokeball
         count by 1 regardless of success.
+
+        Return True if the catch is successful and False otherwise.
         """
         r = random.randint(1, 100)
 
@@ -165,8 +167,19 @@ class Player(Character):
             pass
         else:
             print("It got away!")
-   
+            return False
+        
+    def run(self, target):
+        """
+        Can only be applied in the presence of a wild pokemann. Success is determined by
+        comparing speeds of the player's lead pokemann and the wild pokemann. Incoroporate
+        randomness so that speed is not the only factor determining success.
+
+        Return True if the escape is successful and False otherwise.
+        """
+        pass
     
+   
 class Opponent(Character):
 
     def __init__(self, name, pokemann, image):
