@@ -64,7 +64,7 @@ class Pokemann:
         if current_health > health:
             current_health = health
 
-        fainted = false
+        fainted = False
 
     def restore(self):
         """
