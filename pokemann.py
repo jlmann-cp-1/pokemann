@@ -65,6 +65,8 @@ class Pokemann:
             current_health = health
 
         fainted = False
+        
+        print(self.name + " was healed. Health is now " + str(self.current_health) + "/" + str(health) + ".")
 
     def restore(self):
         """
