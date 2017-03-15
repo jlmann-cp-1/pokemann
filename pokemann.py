@@ -26,24 +26,22 @@ class Pokemann:
                     
         return result
 
-    def execute_move(self, move, target):
+    def get_random_move(self):
         available = self.get_available_moves()
-        
-        if self.fainted:
-            print("Error: " + self.name + " is fainted!")
-        elif move not in available:
-            print("Error: " + move.name + " is not available.")
+                   
+        return random.choice(available)
+
+    def execute_move(self, move, target):
+        r = random.randint(1, 100)
+
+        if r <= move.accuracy:
+            damage = move.calculate_damage(self, target)
+            print(self.name + " hits " + target.name + " with " + move.name  + " for " + str(damage) + ".")
+            target.take_damage(damage)
         else:
-            r = random.randint(1, 100)
+            print(move.name + "missed!")
 
-            if r <= move.accuracy:
-                damage = move.calculate_damage(self, target)
-                print(self.name + " hits " + target.name + " with " + move.name  + " for " + str(damage) + ".")
-                target.take_damage(damage)
-            else:
-                print(move.name + "missed!")
-
-            move.remaining_power -= 1
+        move.remaining_power -= 1
 
     def take_damage(self, amount):
         self.current_health -= amount
@@ -54,6 +52,7 @@ class Pokemann:
     def faint(self):
         self.current_health = 0
         self.fainted = True
+        
         print(self.name + " fainted!")
                   
     def heal(self, amount):
@@ -233,7 +232,7 @@ class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
-      
+    
     def reorder(self, pokemann):
         """
         Returns a random available move from the pokemann. This will probably only be used
@@ -248,7 +247,8 @@ class NPC(Character):
         """
         Returns a random available move from the active pokemann.
         """
-        pass
+        active = self.get_active_pokemann()
+        available = active.get_random_move()
 
     
 class Game:
@@ -265,7 +265,7 @@ class Game:
         """
         pass
     
-    def battle(self, player, opponent):
+    def battle(self, player, npc):
         """
         This function controls all battle logic including decisions to reorder pokemann,
         fight, use potions, and whatever else happens in Pokebattles. This continues until all
