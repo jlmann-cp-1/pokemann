@@ -117,7 +117,7 @@ class Move:
 
     def restore(self):
         """
-        Resets remaing_power to starting powerpoint.
+        Resets remaining_power to starting powerpoint.
         """
         self.remaining_power = powerpoint
         
