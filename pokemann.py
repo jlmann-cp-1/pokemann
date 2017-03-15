@@ -126,9 +126,9 @@ class Move:
 
 class Character:
     
-    def __init__(self, name, pokemann, image):
+    def __init__(self, name, party, image):
         self.name = name
-        self.pokemann = pokemann
+        self.party = party
         self.image = image
 
     def get_available_pokemann(self):
@@ -137,7 +137,7 @@ class Character:
         """
         result = []
                   
-        for p in self.pokemann:
+        for p in self.party:
             if p.fainted == False:
                   result.append(p)
                     
@@ -157,10 +157,14 @@ class Character:
     
     def set_active_pokemann(self, swap_pos):
         """
-        Moves pokemann to first position [0] in the pokemann list by exchanging it with
+        Moves pokemann to first position [0] in the party by exchanging it with
         pokemann located at swap_pos.
         """
         pass
+    
+    def restore(self):
+        for poke in party:
+            poke.restore()
     
     def draw(self):
         pass
