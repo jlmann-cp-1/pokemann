@@ -56,9 +56,6 @@ class Pokemann:
         print(self.name + " fainted!")
                   
     def heal(self, amount):
-        """
-        Raises current_health by amount but not to more than the base health.
-        """
         self.current_health += health
 
         if current_health > health:
@@ -69,9 +66,6 @@ class Pokemann:
         print(self.name + " was healed. Health is now " + str(self.current_health) + "/" + str(health) + ".")
 
     def restore(self):
-        """
-        Restores all health, unfaints, and resets powerpoint for all moves.
-        """
         self.current_health = health
         self.fainted = False
 
@@ -132,9 +126,6 @@ class Character:
         self.image = image
 
     def get_available_pokemann(self):
-        """
-        Returns a list of all unfainted Pokemann belonging to a character.
-        """
         result = []
                   
         for p in self.party:
@@ -144,23 +135,12 @@ class Character:
         return result
     
     def get_active_pokemann(self):
-        """
-        Returns the first unfainted character in the pokemann list. If all pokemann
-        are fainted, return None.
-        """
         available = self.get_available_pokemann()
 
         if len(available) > 0:
             return available[0]
         else:
             return None
-    
-    def set_active_pokemann(self, swap_pos):
-        """
-        Moves pokemann to first position [0] in the party by exchanging it with
-        pokemann located at swap_pos.
-        """
-        pass
     
     def restore(self):
         for poke in party:
@@ -207,87 +187,15 @@ class Player(Character):
         """
         pass
     
-    def reorder(self, target):
-        """
-        1) Generate a menu which shows a numbered list of all available pokemann along with status (health).
-        2) Have the player select a character.
-        3) Set the selected character as the active pokemann.
-        """
-        pass
-    
-    def select_move(self):
-        """
-        1) Generate a numbered list all available moves for the active pokemann.
-        2) Have the player select a move.
-        3) Return the selected move.
-        """
-        active = self.get_active_pokemann()
-        available = active.get_available_moves()
-        
-        print("Select a move:")
-        
-        for i, move in enumerate(available):
-            print(str(i) + ") " + move.name)
-
-        n = input("Your choice: ")
-        n = int(n)
-        
-        return available[n]
-    
 class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
     
-    def reorder(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        active = self.get_active_pokemann()
-        available = active.get_available_moves()
-        
-        return random.choice(available)
-
-    def select_move():
-        """
-        Returns a random available move from the active pokemann.
-        """
-        active = self.get_active_pokemann()
-        available = active.get_random_move()
-
-    
 class Game:
 
     def __init__(self):
         pass
-
-    def encounter(self, player, target):
-        """
-        This function controls all logic when encountering a wild pokemann. For each turn,
-        options are to catch, run, reorder, or select a move. The encounter continues until the
-        wild pokemann is caught or fainted or the player successfully runs or has all pokemann
-        in the party fainted.
-        """
-        pass
-    
-    def battle(self, player, npc):
-        """
-        This function controls all battle logic including decisions to reorder pokemann,
-        fight, use potions, and whatever else happens in Pokebattles. This continues until all
-        pokemann for either the player or opponent are fainted.
-        """
-        pass
-    
-    def loop(self):
-        pass
-    
-        # get input
-
-        # do logic stuff
-
-        # draw stuff
-
 
 if __name__ == '__main__':
     
