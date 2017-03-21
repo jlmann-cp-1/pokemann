@@ -59,7 +59,7 @@ class Pokemann:
         """
         Raises current_health by amount but not to more than the base health.
         """
-        self.current_health += health
+        self.current_health += amount
 
         if current_health > health:
             current_health = health
