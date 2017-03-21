@@ -159,17 +159,6 @@ class Player(Character):
         self.pokeballs = 0
 
     def catch(self, target):
-        """
-        Can only be applied to a wild pokemann. Determine a catch by generating a random
-        value and comparing it to the catch_rate. If a catch is successful, append the
-        target to the player's pokemann list. However, if the pokemann list already
-        contains 6 pokemann, add the caught target to the players computer instead.
-        Pokemann sent to the computer will be fully restored, but other caught pokemann
-        will remain at the strength they were caught. Decrease the player's pokeball
-        count by 1 regardless of success.
-
-        Return True if the catch is successful and False otherwise.
-        """
         r = random.randint(1, 100)
 
         if r <= target.catch_rate:
