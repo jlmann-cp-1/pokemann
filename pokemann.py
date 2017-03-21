@@ -143,8 +143,8 @@ class Character:
             return None
     
     def restore(self):
-        for poke in party:
-            poke.restore()
+        for p in self.party:
+            p.restore()
     
     def draw(self):
         pass
@@ -152,8 +152,8 @@ class Character:
     
 class Player(Character):
 
-    def __init__(self, name, pokemann, image):
-        Character.__init__(self, name, pokemann, image)
+    def __init__(self, name, party, image):
+        Character.__init__(self, name, party, image)
         
         self.computer = []
         self.pokeballs = 0
@@ -178,8 +178,8 @@ class Player(Character):
     
 class NPC(Character):
 
-    def __init__(self, name, pokemann, image):
-        Character.__init__(self, name, pokemann, image)
+    def __init__(self, name, party, image):
+        Character.__init__(self, name, party, image)
     
 class Game:
 
