@@ -56,7 +56,7 @@ class Pokemann:
         print(self.name + " fainted!")
                   
     def heal(self, amount):
-        self.current_health += health
+        self.current_health += amount
 
         if current_health > health:
             current_health = health
