@@ -155,12 +155,12 @@ class Character:
         else:
             return None
     
-    def set_active_pokemann(self, swap_pos):
+    def set_active_pokemann(self, poke):
         """
-        Moves pokemann to first position [0] in the party by exchanging it with
-        pokemann located at swap_pos.
+        Moves pokemann to first position [0] in the party.
         """
-        self.party[0], self.party[swap_pos] = self.party[swap_pos], self.party[0]
+        self.party.remove(poke)
+        self.party.insert(0, poke)
     
     def restore(self):
         for poke in party:
@@ -248,13 +248,23 @@ class Player(Character):
             print("Escape unsuccessful.")
             return False
     
-    def switch_out(self, target):
+    def switch_out(self):
         """
         1) Generate a menu which shows a numbered list of all available pokemann along with status (health).
         2) Have the player select a character.
         3) Set the selected character as the active pokemann.
         """
-        pass
+        available = self.get_available_pokemann()
+        
+        print("Select active Pokemann...")
+                        
+        for i, p in enumerate(available):
+            print(str(i) + ") " + p.name)
+
+        n = input("Your choice: ")
+        n = int(n)
+
+        self.set_active_pokemann(available[n])
     
     
 class NPC(Character):
@@ -262,19 +272,17 @@ class NPC(Character):
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
     
-    def switch_out(self, pokemann):
+    def switch_out(self):
         pass
     
-    def select_move():
+    def select_move(self):
         """
         Returns a random available move from the active pokemann.
         """
         active = self.get_active_pokemann()
         available = active.get_random_move()
 
-    def get_decision():
-        pass
-    
+
 class Game:
 
     def __init__(self, player):
@@ -334,19 +342,12 @@ class Game:
                     available = self.player.get_available_pokemann()
 
                     if len(available) > 1:
-                        print("Select active Pokemann...")
+                        self.player.switch_out()
                         
-                        for i, p in enumerate(available):
-                            print(str(i) + ") " + p.name)
-
-                        n = input("Your choice: ")
-                        n = int(n)
-
-                        self.player.set_active_pokemann(n)
                         active = self.player.get_active_pokemann()
-                        
+        
                         target_move = target.get_random_move()
-                        target.execute_move(target_move, active)
+                        target.execute_move(target_move, active)             
                         
                     else:
                         print("You have no unfainted Pokemann to switch.")
@@ -367,6 +368,7 @@ class Game:
         pokemann for either the player or opponent are fainted.
         """
         pass
+       
     
     def loop(self):
         pass
@@ -406,7 +408,7 @@ if __name__ == '__main__':
     # Create Player
     pat = Player("Pat Riotum", [coopasaur, andrewag, caseypuff, blakachu], "pat.png")
 
-    # Create Opponents
+    # Create NPCs
     rocket = NPC("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
     jessie = NPC("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
 
