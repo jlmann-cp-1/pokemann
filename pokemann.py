@@ -22,7 +22,6 @@ class Pokemann:
         """
         Returns a list of moves with power remaining.
         """
-
         result = []
                   
         for m in self.moves:
@@ -155,7 +154,7 @@ class Character:
         result = []
                   
         for p in self.party:
-            if p.fainted == False:
+            if not p.fainted:
                   result.append(p)
                     
         return result
@@ -206,13 +205,13 @@ class Player(Character):
         
         print("Select a move:")
         
-        for i, m in enumerate(available):
+        for i, m in enumerate(available, 1):
             print(str(i) + ") " + m.name + " (power=" + str(m.remaining_power) + ")")
 
         n = input("Your choice: ")
         n = int(n)
         
-        return available[n]
+        return available[n - 1]
 
     def catch(self, target):
         """
@@ -274,13 +273,13 @@ class Player(Character):
         
         print("Select active Pokemann...")
                         
-        for i, p in enumerate(available):
+        for i, p in enumerate(available, 1):
             print(str(i) + ") " + p.name + " (health=" + str(p.current_health) + ")")
 
         n = input("Your choice: ")
         n = int(n)
 
-        self.set_active_pokemann(available[n])
+        self.set_active_pokemann(available[n - 1])
     
     
 class NPC(Character):
