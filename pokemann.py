@@ -1,3 +1,4 @@
+import copy
 import random
 
 class Pokemann:
@@ -11,8 +12,8 @@ class Pokemann:
         self.speed = speed
         self.health = health
         self.catch_rate = catch_rate
-        self.moves = moves # this is a list of Move objects
-        self.image = image # path to image file
+        self.moves = copy.deepcopy(moves)
+        self.image = image
 
         self.fainted = False
         self.current_health = health
@@ -144,7 +145,7 @@ class Character:
     
     def __init__(self, name, party, image):
         self.name = name
-        self.party = party
+        self.party = copy.deepcopy(party)
         self.image = image
 
     def get_available_pokemann(self):
@@ -171,16 +172,16 @@ class Character:
         else:
             return None
     
-    def set_active_pokemann(self, poke):
+    def set_active_pokemann(self, pokemann):
         """
         Moves pokemann to first position [0] in the party.
         """
-        self.party.remove(poke)
-        self.party.insert(0, poke)
+        self.party.remove(pokemann)
+        self.party.insert(0, pokemann)
     
     def restore(self):
-        for poke in party:
-            poke.restore()
+        for p in party:
+            p.restore()
     
     def draw(self):
         pass
@@ -205,8 +206,8 @@ class Player(Character):
         
         print("Select a move:")
         
-        for i, move in enumerate(available):
-            print(str(i) + ") " + move.name)
+        for i, m in enumerate(available):
+            print(str(i) + ") " + m.name + " (power=" + str(m.remaining_power) + ")")
 
         n = input("Your choice: ")
         n = int(n)
@@ -482,7 +483,7 @@ if __name__ == '__main__':
 
     # Create NPCs
     rocket = NPC("Team Rocket", [colboreon, zoeotto, morganyta, cookmander], "rocket.png")
-    jessie = NPC("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
+    jessie = NPC("Jessie", [coopasaur, mayfieldarow, katlevee, marcelax], "jessie.png")
 
     # Create a game
     g = Game()
