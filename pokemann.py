@@ -18,6 +18,10 @@ class Pokemann:
         self.current_health = health
 
     def get_available_moves(self):
+        """
+        Returns a list of moves with power remaining.
+        """
+
         result = []
                   
         for m in self.moves:
@@ -27,6 +31,9 @@ class Pokemann:
         return result
 
     def get_random_move(self):
+        """
+        Returns a random available move.
+        """
         available = self.get_available_moves()
                    
         return random.choice(available)
@@ -44,12 +51,18 @@ class Pokemann:
         move.remaining_power -= 1
 
     def take_damage(self, amount):
+        """
+        Applies damage to the Pokemann. If health falls to zero or less, then the Pokemann faints.
+        """
         self.current_health -= amount
         
         if self.current_health <= 0:
             self.faint()
 
     def faint(self):
+        """
+        Puts Pokemann in fainted state.
+        """
         self.current_health = 0
         self.fainted = True
         
@@ -109,6 +122,9 @@ class Move:
         self.remaining_power = powerpoint
 
     def calculate_damage(self, attacker, target):
+        """
+        Returns the damage done by a move.
+        """
 
         p = self.power
         a = attacker.attack
@@ -258,7 +274,7 @@ class Player(Character):
         print("Select active Pokemann...")
                         
         for i, p in enumerate(available):
-            print(str(i) + ") " + p.name)
+            print(str(i) + ") " + p.name + " (health=" + str(p.current_health) + ")")
 
         n = input("Your choice: ")
         n = int(n)
@@ -280,6 +296,9 @@ class NPC(Character):
         return active.get_random_move()
 
     def switch_out(self):
+        """
+        Swaps the active Pokemann.
+        """
         available = self.get_available_pokemann()
         available = available[1:]
         
@@ -288,10 +307,13 @@ class NPC(Character):
         self.set_active_pokemann(p)
         
     def will_switch(self):
+        """
+        Determines if an NPC will decide to switch out.
+        """
         available = self.get_available_pokemann()
         r = random.randint(1, 100)
 
-        return len(available) > 1 and r <= 15
+        return len(available) > 1 and r <= 20
     
 class Game:
 
@@ -299,6 +321,11 @@ class Game:
         pass
 
     def exchange_attacks(self, active, active_move, target, target_move):
+        """
+        Exchanges attacks between two Pokemann. If both Pokemann have moves selected, then
+        the faster Pokemann will attack first. Otherwise, only the Pokemann with a move
+        selected will attack.
+        """
         if active.speed >= target.speed:
             if active_move != None:
                 active.execute_move(active_move, target)
@@ -320,7 +347,8 @@ class Game:
         wild pokemann is caught or fainted, the player successfully runs, or has all pokemann
         in it's party fainted.
         """
-        print("You've found a " + target.name + "!")
+        print("You found a " + target.name + "!")
+        print()
         
         done = False
 
@@ -330,10 +358,12 @@ class Game:
             target_move = target.get_random_move()
                 
             print("Your " + active.name + " is ready.")
-            choice = input("Would you like to (f)ight, (c)atch, (r)un, or (s)witch out? ")
-
+            choice = input("Would you like to (f)ight, (c)atch, (r)un, or (s)witch out? ")            
+            print()
+            
             if choice == 'f':
-                active_move = player.select_move()   
+                active_move = player.select_move()
+                print()
             elif choice == 'c':
                 done = player.catch(target)
             elif choice == 'r':
@@ -341,6 +371,7 @@ class Game:
             elif choice == 's':
                 player.switch_out()
                 active = player.get_active_pokemann()
+                print()
                 print("Your " + active.name + " is now active.")
 
             if not done:
@@ -361,7 +392,11 @@ class Game:
         or reorder. The battle continues until the entire party is defeated for either
         the player or the npc.
         """
-        print("You've found a " + npc.name + "!")
+        print("You found " + npc.name + "!")
+        print(npc.name + " has the following Pokeman:") 
+        for p in npc.party:
+            print(p.name)
+        print()
         
         done = False
 
@@ -374,14 +409,18 @@ class Game:
             
             print("Your " + active.name + " is ready.")
             choice = input("Would you like to (f)ight or (s)witch out? ")
+            
+            print()
 
             if choice == 's':
                 player.switch_out()
                 active = player.get_active_pokemann()
+                print()
                 print("Your " + active.name + " is now active.")
             elif choice == 'f':
                 active_move = player.select_move()
-
+                print()
+                
             if npc.will_switch():
                 npc.switch_out()
                 target = npc.get_active_pokemann()
