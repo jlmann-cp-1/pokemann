@@ -216,16 +216,15 @@ class Player(Character):
     def catch(self, target):
         """
         Can only be applied to a wild pokemann. Determine a catch by generating a random
-        value and comparing it to the catch_rate. If a catch is successful, append the
-        target to the player's pokemann list. However, if the pokemann list already
-        contains 6 pokemann, add the caught target to the players computer instead.
-        Pokemann sent to the computer will be fully restored, but other caught pokemann
-        will remain at the strength they were caught. Decrease the player's pokeball
-        count by 1 regardless of success.
+        value weighted by health and comparing it to the catch_rate. If a catch is successful,
+        append the target to the player's pokemann list. However, if the pokemann list already
+        contains 6 pokemann, add the caught target to the players computer instead. Pokemann sent
+        to the computer will be fully restored, but other caught pokemann will remain at the
+        strength they were caught. Decrease the player's pokeball count by 1 regardless of success.
 
         Return True if the catch is successful and False otherwise.
         """
-        r = random.randint(1, 100)
+        r = random.randint(1, 100) * target.current_health / target.health
 
         if r <= target.catch_rate:
             print("You caught a " + target.name + "!")
@@ -347,7 +346,7 @@ class Game:
         wild pokemann is caught or fainted, the player successfully runs, or has all pokemann
         in it's party fainted.
         """
-        print("You found a " + target.name + "!")
+        print("You found a " + target.name +  "! (health=" + str(target.current_health) + ")")
         print()
         
         done = False
@@ -395,7 +394,7 @@ class Game:
         print("You found " + npc.name + "!")
         print(npc.name + " has the following Pokeman:") 
         for p in npc.party:
-            print(p.name)
+            print(p.name + " (health=" + str(p.current_health) + ")")
         print()
         
         done = False
