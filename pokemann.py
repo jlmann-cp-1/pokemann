@@ -72,7 +72,7 @@ class Pokemann:
         """
         Restores all health, unfaints, and resets powerpoint for all moves.
         """
-        self.current_health = health
+        self.current_health = self.health
         self.fainted = False
 
         for m in self.moves:
@@ -121,7 +121,7 @@ class Move:
         """
         Resets remaining_power to starting powerpoint.
         """
-        self.remaining_power = powerpoint
+        self.remaining_power = self.powerpoint
         
 
 class Character:
@@ -160,7 +160,7 @@ class Character:
         Moves pokemann to first position [0] in the party by exchanging it with
         pokemann located at swap_pos.
         """
-        pass
+        self.party[0], self.party[swap_pos] = self.party[swap_pos], self.party[0]
     
     def restore(self):
         for poke in party:
@@ -172,49 +172,12 @@ class Character:
     
 class Player(Character):
 
-    def __init__(self, name, pokemann, image):
-        Character.__init__(self, name, pokemann, image)
+    def __init__(self, name, party, image):
+        Character.__init__(self, name, party, image)
         
         self.computer = []
         self.pokeballs = 0
 
-    def catch(self, target):
-        """
-        Can only be applied to a wild pokemann. Determine a catch by generating a random
-        value and comparing it to the catch_rate. If a catch is successful, append the
-        target to the player's pokemann list. However, if the pokemann list already
-        contains 6 pokemann, add the caught target to the players computer instead.
-        Pokemann sent to the computer will be fully restored, but other caught pokemann
-        will remain at the strength they were caught. Decrease the player's pokeball
-        count by 1 regardless of success.
-
-        Return True if the catch is successful and False otherwise.
-        """
-        r = random.randint(1, 100)
-
-        if r <= target.catch_rate:
-            pass
-        else:
-            print("It got away!")
-    
-    def run(self, target):
-        """
-        Can only be applied in the presence of a wild pokemann. Success is determined by
-        comparing speeds of the player's active pokemann and the wild pokemann. Incoroporate
-        randomness so that speed is not the only factor determining success.
-
-        Return True if the escape is successful and False otherwise.
-        """
-        pass
-    
-    def reorder(self, target):
-        """
-        1) Generate a menu which shows a numbered list of all available pokemann along with status (health).
-        2) Have the player select a character.
-        3) Set the selected character as the active pokemann.
-        """
-        pass
-    
     def select_move(self):
         """
         1) Generate a numbered list all available moves for the active pokemann.
@@ -233,22 +196,75 @@ class Player(Character):
         n = int(n)
         
         return available[n]
+
+    def catch(self, target):
+        """
+        Can only be applied to a wild pokemann. Determine a catch by generating a random
+        value and comparing it to the catch_rate. If a catch is successful, append the
+        target to the player's pokemann list. However, if the pokemann list already
+        contains 6 pokemann, add the caught target to the players computer instead.
+        Pokemann sent to the computer will be fully restored, but other caught pokemann
+        will remain at the strength they were caught. Decrease the player's pokeball
+        count by 1 regardless of success.
+
+        Return True if the catch is successful and False otherwise.
+        """
+        r = random.randint(1, 100)
+
+        if r <= target.catch_rate:
+            print("You caught a " + target.name + "!")
+
+            if len(self.party) < 6:
+                self.party.append(target)
+            else:
+                target.restore()
+                self.computer.append(target)
+
+            return True
+        else:
+            print("The " + target.name + " got away!")
+
+            return False
+    
+    def run(self, target):
+        """
+        Can only be applied in the presence of a wild pokemann. Success is determined by
+        comparing speeds of the player's active pokemann and the wild pokemann. Incoroporate
+        randomness so that speed is not the only factor determining success.
+
+        Return True if the escape is successful and False otherwise.
+        """
+        runner = self.get_active_pokemann()
+
+        r = random.randint(0, 100)
+
+        r += runner.speed
+        r -= target.speed
+
+        if r < 60:
+            print("You got away!")
+            return True
+        else:
+            print("Escape unsuccessful.")
+            return False
+    
+    def switch_out(self, target):
+        """
+        1) Generate a menu which shows a numbered list of all available pokemann along with status (health).
+        2) Have the player select a character.
+        3) Set the selected character as the active pokemann.
+        """
+        pass
+    
     
 class NPC(Character):
 
     def __init__(self, name, pokemann, image):
         Character.__init__(self, name, pokemann, image)
     
-    def reorder(self, pokemann):
-        """
-        Returns a random available move from the pokemann. This will probably only be used
-        by computer controlled pokemann.
-        """
-        active = self.get_active_pokemann()
-        available = active.get_available_moves()
-        
-        return random.choice(available)
-
+    def switch_out(self, pokemann):
+        pass
+    
     def select_move():
         """
         Returns a random available move from the active pokemann.
@@ -256,22 +272,95 @@ class NPC(Character):
         active = self.get_active_pokemann()
         available = active.get_random_move()
 
+    def get_decision():
+        pass
     
 class Game:
 
-    def __init__(self):
-        pass
+    def __init__(self, player):
+        self.player = player
 
-    def encounter(self, player, target):
+    def encounter(self, target):
         """
         This function controls all logic when encountering a wild pokemann. For each turn,
         options are to catch, run, reorder, or select a move. The encounter continues until the
-        wild pokemann is caught or fainted or the player successfully runs or has all pokemann
-        in the party fainted.
+        wild pokemann is caught or fainted, the player successfully runs, or has all pokemann
+        in it's party fainted.
         """
-        pass
-    
-    def battle(self, player, npc):
+        print("You've found a " + target.name + "!")
+        
+        done = False
+
+        while not done:
+            active = self.player.get_active_pokemann()
+
+            if active != None:
+                print("Your " + active.name + " is ready.")
+                choice = input("Would you like to (f)ight, (c)atch, (r)un, or (s)witch out? ")
+
+                if choice == 'f':
+                    active_move = self.player.select_move()
+                    target_move = target.get_random_move()
+
+                    if active.speed >= target.speed:
+                        active.execute_move(active_move, target)
+
+                        if not target.fainted:
+                            target.execute_move(target_move, active)
+                    else:
+                        target.execute_move(target_move, active)
+
+                        if not active.fainted:
+                            active.execute_move(active_move, target)
+
+                    if target.fainted:
+                        done = True
+                
+                elif choice == 'c':
+                    done = self.player.catch(target)
+
+                    if not done:
+                        target_move = target.get_random_move()
+                        target.execute_move(target_move, active)
+                
+                elif choice == 'r':
+                    done = self.player.run(target)
+                
+                    if not done:
+                        target_move = target.get_random_move()
+                        target.execute_move(target_move, active)
+                
+                elif choice == 's':
+                    available = self.player.get_available_pokemann()
+
+                    if len(available) > 1:
+                        print("Select active Pokemann...")
+                        
+                        for i, p in enumerate(available):
+                            print(str(i) + ") " + p.name)
+
+                        n = input("Your choice: ")
+                        n = int(n)
+
+                        self.player.set_active_pokemann(n)
+                        active = self.player.get_active_pokemann()
+                        
+                        target_move = target.get_random_move()
+                        target.execute_move(target_move, active)
+                        
+                    else:
+                        print("You have no unfainted Pokemann to switch.")
+
+                else:
+                    print("Invalid selection. Please try again.")
+                    
+            else:
+                print("Oh, no! All of the Pokemann in your party are fainted.")
+                done = True
+
+            print()
+            
+    def battle(self, npc):
         """
         This function controls all battle logic including decisions to reorder pokemann,
         fight, use potions, and whatever else happens in Pokebattles. This continues until all
@@ -322,4 +411,4 @@ if __name__ == '__main__':
     jessie = NPC("Jessie", [vincolairy, mayfieldarow, katlevee, marcelax], "jessie.png")
 
     # Create a game
-    g = Game()
+    g = Game(pat)
