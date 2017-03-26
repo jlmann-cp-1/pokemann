@@ -39,7 +39,7 @@ class Pokemann:
             print(self.name + " hits " + target.name + " with " + move.name  + " for " + str(damage) + ".")
             target.take_damage(damage)
         else:
-            print(move.name + "missed!")
+            print(move.name + " missed!")
 
         move.remaining_power -= 1
 
@@ -278,6 +278,21 @@ class Game:
     def __init__(self, player):
         self.player = player
 
+    def exchange_attacks(self, active, active_move, target, target_move):
+        if active.speed >= target.speed:
+            if active_move != None:
+                active.execute_move(active_move, target)
+
+            if not target.fainted and target_move != None:
+                target.execute_move(target_move, active)
+                        
+        else:
+            if target_move != None:
+                target.execute_move(target_move, active)
+
+            if not active.fainted and active_move != None:
+                active.execute_move(active_move, target)
+    
     def encounter(self, target):
         """
         This function controls all logic when encountering a wild pokemann. For each turn,
@@ -293,57 +308,25 @@ class Game:
             active = self.player.get_active_pokemann()
 
             if active != None:
+                active_move = None
+                target_move = target.get_random_move()
+                
                 print("Your " + active.name + " is ready.")
                 choice = input("Would you like to (f)ight, (c)atch, (r)un, or (s)witch out? ")
 
                 if choice == 'f':
-                    active_move = self.player.select_move()
-                    target_move = target.get_random_move()
-
-                    if active.speed >= target.speed:
-                        active.execute_move(active_move, target)
-
-                        if not target.fainted:
-                            target.execute_move(target_move, active)
-                    else:
-                        target.execute_move(target_move, active)
-
-                        if not active.fainted:
-                            active.execute_move(active_move, target)
-
-                    if target.fainted:
-                        done = True
-                
+                    active_move = self.player.select_move()   
                 elif choice == 'c':
                     done = self.player.catch(target)
-
-                    if not done:
-                        target_move = target.get_random_move()
-                        target.execute_move(target_move, active)
-                
                 elif choice == 'r':
                     done = self.player.run(target)
-                
-                    if not done:
-                        target_move = target.get_random_move()
-                        target.execute_move(target_move, active)
-                
                 elif choice == 's':
-                    available = self.player.get_available_pokemann()
+                    self.player.switch_out()
+                    active = self.player.get_active_pokemann()
 
-                    if len(available) > 1:
-                        self.player.switch_out()
-                        
-                        active = self.player.get_active_pokemann()
-        
-                        target_move = target.get_random_move()
-                        target.execute_move(target_move, active)             
-                        
-                    else:
-                        print("You have no unfainted Pokemann to switch.")
-
-                else:
-                    print("Invalid selection. Please try again.")
+                if not done:
+                    self.exchange_attacks(active, active_move, target, target_move)
+                    done = target.fainted
                     
             else:
                 print("Oh, no! All of the Pokemann in your party are fainted.")
